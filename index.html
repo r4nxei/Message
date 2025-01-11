@@ -1,10 +1,10 @@
-<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Message</title>
     <style>
+        /* Animasi untuk latar belakang berputar dengan gradasi */
         @keyframes rotateBackground {
             0% {
                 background-position: 0% 50%;
@@ -15,13 +15,13 @@
         }
 
         body {
-            background: linear-gradient(to bottom, #0A1D2B, #000000);
+            background: linear-gradient(to bottom, #0A1D2B, #000000); /* Gradasi latar belakang vertikal dari dark blue ke black */
             height: 100vh;
             margin: 0;
             padding: 0;
             animation: rotateBackground 30s ease infinite;
             background-size: 200% 200%;
-            color: white;
+            color: white; /* Mengubah warna teks menjadi putih */
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -29,6 +29,7 @@
             text-align: center;
         }
 
+        /* Kolom pojok atas */
         .column {
             width: 100%;
             height: 50px;
@@ -42,6 +43,7 @@
             z-index: 10;
         }
 
+        /* Button */
         button {
             background-color: transparent;
             color: white;
@@ -59,8 +61,9 @@
             background-color: rgba(0, 0, 0, 0.2);
         }
 
+        /* Kolom Input Teks Nama */
         .column-item {
-            background-color: rgba(0, 0, 0, 0.6);
+            background-color: rgba(0, 0, 0, 0.6); /* Latar belakang kolom dengan transparansi */
             color: white;
             font-size: 16px;
             padding: 5px;
@@ -88,10 +91,12 @@
             border-radius: 5px;
         }
 
+        /* Kolom Input Teks Tambahan */
         .column-item.second {
             height: 200px;
         }
 
+        /* Tombol Enter */
         .enter-button {
             background-color: transparent;
             color: white;
@@ -111,25 +116,25 @@
             background-color: rgba(0, 0, 0, 0.2);
         }
 
-        /* Pesan notifikasi */
-        .notification {
-            padding: 10px;
-            color: white;
-            font-family: 'Courier New', Courier, monospace;
-            border-radius: 5px;
-            margin-top: 20px;
-            text-align: center;
-            display: none;
+        /* Media query untuk perangkat desktop */
+        @media (min-width: 768px) {
+            .column-item {
+                width: 45%;
+            }
+            .column-item.second {
+                height: 200px;
+            }
         }
 
-        .notification.success {
-            background-color: #28a745;
+        /* Media query untuk perangkat mobile (Android) */
+        @media (max-width: 767px) {
+            .column-item {
+                width: 80%;
+            }
+            .column-item.second {
+                height: 250px;
+            }
         }
-
-        .notification.error {
-            background-color: #dc3545;
-        }
-
     </style>
 </head>
 <body>
@@ -154,31 +159,23 @@
     <!-- Tombol Enter -->
     <button class="enter-button" onclick="sendMessage()">Enter</button>
 
-    <!-- Pesan Notifikasi -->
-    <div id="notification" class="notification"></div>
-
     <script>
-        // Fungsi untuk mengambil IP dan negara menggunakan API ip-api.com
-        async function getIpData() {
-            const response = await fetch('http://ip-api.com/json/');
-            const data = await response.json();
-            return { ip: data.query, country: data.country };
-        }
-
         async function sendMessage() {
-            // Ambil data IP dan negara
-            const ipData = await getIpData();
-
             // Ambil data nama dan pesan
             var name = document.getElementById('name').value;
             var message = document.getElementById('message').value;
 
-            // URL Webhook
+            if (!name || !message) {
+                showNotification('Name and message cannot be empty!', 'error');
+                return;
+            }
+
+            // URL Webhook Discord
             var webhookUrl = "https://discord.com/api/webhooks/1327200149134381096/pmlY151E4nuSjjOoL_foHu2XlWt7HQw3XxunzsNlfdJ1WSY_IHTjC4_AjXfuyFPYEfCv";
 
             // Payload yang akan dikirim ke webhook
             var payload = {
-                content: `||IP: ${ipData.ip}\nCountry: ${ipData.country}||\nName: \`${name}\`\nMessage: \`${message}\``
+                content: `Name: \`${name}\`\nMessage: \`${message}\``
             };
 
             // Kirim data ke webhook
@@ -203,14 +200,20 @@
 
         // Fungsi untuk menampilkan notifikasi
         function showNotification(message, type) {
-            var notification = document.getElementById("notification");
+            const notification = document.createElement('div');
             notification.textContent = message;
-            notification.className = "notification " + type;
-            notification.style.display = "block";
+            notification.style.position = 'fixed';
+            notification.style.bottom = '20px';
+            notification.style.right = '20px';
+            notification.style.backgroundColor = type === 'success' ? 'green' : 'red';
+            notification.style.color = 'white';
+            notification.style.padding = '10px 20px';
+            notification.style.borderRadius = '5px';
+            notification.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.5)';
+            document.body.appendChild(notification);
 
-            // Menghilangkan notifikasi setelah 3 detik
             setTimeout(() => {
-                notification.style.display = "none";
+                notification.remove();
             }, 3000);
         }
     </script>
