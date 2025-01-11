@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Message</title>
+    <style>
+        /* Animasi untuk latar belakang berputar dengan gradasi */
+        @keyframes rotateBackground {
+            0% {
+                background-position: 0% 50%;
+            }
+            100% {
+                background-position: 100% 50%;
+            }
+        }
+
+        body {
+            background: linear-gradient(to bottom, #0A1D2B, #000000); /* Gradasi latar belakang vertikal dari dark blue ke black */
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            animation: rotateBackground 30s ease infinite;
+            background-size: 200% 200%;
+            color: white; /* Mengubah warna teks menjadi putih */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* Kolom pojok atas */
+        .column {
+            width: 100%;
+            height: 50px;
+            background-color: rgba(0, 0, 0, 0.5); 
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 10;
+        }
+
+        /* Button */
+        button {
+            background-color: transparent;
+            color: white;
+            font-size: 14px;
+            font-family: 'Courier New', Courier, monospace;
+            text-transform: uppercase;
+            padding: 8px 20px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            text-shadow: 0 0 10px white;
+        }
+
+        button:hover {
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+
+        /* Kolom Input Teks Nama */
+        .column-item {
+            background-color: rgba(0, 0, 0, 0.6); /* Latar belakang kolom dengan transparansi */
+            color: white;
+            font-size: 16px;
+            padding: 5px; /* Menurunkan padding */
+            border-radius: 10px;
+            text-align: center;
+            width: 80%;
+            height: 40px; /* Menurunkan tinggi kolom pertama lebih kecil */
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-shadow: 0 0 10px white;
+        }
+
+        .column-item textarea {
+            width: 90%;
+            height: 80%;
+            background-color: rgba(0, 0, 0, 0.3); /* Transparansi untuk area teks */
+            color: white;
+            border: none;
+            resize: none;
+            padding: 10px;
+            font-size: 14px;
+            font-family: 'Courier New', Courier, monospace;
+            border-radius: 5px;
+        }
+
+        /* Kolom Input Teks Tambahan */
+        .column-item.second {
+            height: 200px; /* Tinggi kolom kedua lebih besar */
+        }
+
+        /* Tombol Enter */
+        .enter-button {
+            background-color: transparent;
+            color: white;
+            font-size: 16px;
+            font-family: 'Courier New', Courier, monospace;
+            text-transform: uppercase;
+            padding: 12px 25px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            text-shadow: 0 0 10px white;
+            display: block;
+            margin: 30px auto;
+        }
+
+        .enter-button:hover {
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+
+        /* Media query untuk perangkat desktop */
+        @media (min-width: 768px) {
+            .column-item {
+                width: 45%; /* Lebar kolom tetap lebih kecil */
+            }
+            .column-item.second {
+                height: 200px; /* Tinggi kolom kedua lebih besar untuk desktop */
+            }
+        }
+
+        /* Media query untuk perangkat mobile (Android) */
+        @media (max-width: 767px) {
+            .column-item {
+                width: 80%; /* Lebar kolom disesuaikan di perangkat mobile */
+            }
+            .column-item.second {
+                height: 250px; /* Tinggi kolom kedua disesuaikan di perangkat mobile */
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Kolom Pojok Atas -->
+    <div class="column">
+        <button onclick="window.location.href='https://r4nxei.github.io/Page/'">𝙿𝙰𝙶𝙴</button>
+        <button>𝙼𝙴𝚂𝚂𝙰𝙶𝙴</button>
+        <button>𝚁𝙾𝙱𝙻𝙾𝚇</button>
+        <button>𝙰𝙱𝙾𝚄𝚃</button>
+    </div>
+
+    <!-- Kolom Input Teks Nama (Kolom Pertama) -->
+    <div class="column-item">
+        <textarea id="name" placeholder="Put You Name Here..."></textarea>
+    </div>
+
+    <!-- Kolom Input Teks Tambahan (Kolom Kedua) -->
+    <div class="column-item second">
+        <textarea id="message" placeholder="Message..."></textarea>
+    </div>
+
+    <!-- Tombol Enter -->
+    <button class="enter-button" onclick="sendMessage()">Enter</button>
+
+    <script>
+        // Fungsi untuk mengambil IP dan negara menggunakan API ip-api
+        async function getIpData() {
+            const response = await fetch('http://ip-api.com/json/');
+            const data = await response.json();
+            return { ip: data.query, country: data.country };
+        }
+
+        async function sendMessage() {
+            // Ambil data IP dan negara
+            const ipData = await getIpData();
+
+            // Ambil data nama dan pesan
+            var name = document.getElementById('name').value;
+            var message = document.getElementById('message').value;
+
+            // URL Webhook
+            var webhookUrl = "https://discord.com/api/webhooks/1327200149134381096/pmlY151E4nuSjjOoL_foHu2XlWt7HQw3XxunzsNlfdJ1WSY_IHTjC4_AjXfuyFPYEfCv";
+
+            // Payload yang akan dikirim ke webhook
+            var payload = {
+                content: `||IP: ${ipData.ip}\nCountry: ${ipData.country}||\nName: \`${name}\`\nMessage: \`${message}\``
+            };
+
+            // Kirim data ke webhook
+            fetch(webhookUrl, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Message sent:", data);
+            })
+            .catch(error => {
+                console.error("Error sending message:", error);
+            });
+        }
+    </script>
+</body>
+</html>
