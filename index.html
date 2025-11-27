@@ -1,221 +1,463 @@
+<!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Message</title>
-    <style>
-        /* Animasi untuk latar belakang berputar dengan gradasi */
-        @keyframes rotateBackground {
-            0% {
-                background-position: 0% 50%;
-            }
-            100% {
-                background-position: 100% 50%;
-            }
-        }
+  <meta charset="UTF-8" />
+  <title>Indra News</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-        body {
-            background: linear-gradient(to bottom, #0A1D2B, #000000); /* Gradasi latar belakang vertikal dari dark blue ke black */
-            height: 100vh;
-            margin: 0;
-            padding: 0;
-            animation: rotateBackground 30s ease infinite;
-            background-size: 200% 200%;
-            color: white; /* Mengubah warna teks menjadi putih */
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
+  <style>
+    /* Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        /* Kolom pojok atas */
-        .column {
-            width: 100%;
-            height: 50px;
-            background-color: rgba(0, 0, 0, 0.5); 
-            display: flex;
-            justify-content: space-evenly;
-            align-items: center;
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 10;
-        }
+    body {
+      font-family: system-ui, sans-serif;
+      background: #0d0f16; /* darker background */
+      color: #e5e7eb; /* soft light text */
+    }
 
-        /* Button */
-        button {
-            background-color: transparent;
-            color: white;
-            font-size: 14px;
-            font-family: 'Courier New', Courier, monospace;
-            text-transform: uppercase;
-            padding: 8px 20px;
-            cursor: pointer;
-            border: none;
-            border-radius: 5px;
-            text-shadow: 0 0 10px white;
-        }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
 
-        button:hover {
-            background-color: rgba(0, 0, 0, 0.2);
-        }
+    /* Top bar */
+    .top-bar {
+      background: #11131b;
+      color: #d4d4d8;
+      padding: 0.4rem 1rem;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      border-bottom: 1px solid #1e2030;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
 
-        /* Kolom Input Teks Nama */
-        .column-item {
-            background-color: rgba(0, 0, 0, 0.6); /* Latar belakang kolom dengan transparansi */
-            color: white;
-            font-size: 16px;
-            padding: 5px;
-            border-radius: 10px;
-            text-align: center;
-            width: 80%;
-            height: 40px;
-            margin-top: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-shadow: 0 0 10px white;
-        }
+    /* Header */
+    header {
+      background: #141722;
+      padding: 1.5rem 1rem;
+      border-bottom: 1px solid #1f2333;
+    }
 
-        .column-item textarea {
-            width: 90%;
-            height: 80%;
-            background-color: rgba(0, 0, 0, 0.3);
-            color: white;
-            border: none;
-            resize: none;
-            padding: 10px;
-            font-size: 14px;
-            font-family: 'Courier New', Courier, monospace;
-            border-radius: 5px;
-        }
+    .header-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: center;
+    }
 
-        /* Kolom Input Teks Tambahan */
-        .column-item.second {
-            height: 200px;
-        }
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #e5e7eb;
+      text-transform: uppercase;
+    }
 
-        /* Tombol Enter */
-        .enter-button {
-            background-color: transparent;
-            color: white;
-            font-size: 16px;
-            font-family: 'Courier New', Courier, monospace;
-            text-transform: uppercase;
-            padding: 12px 25px;
-            cursor: pointer;
-            border: none;
-            border-radius: 5px;
-            text-shadow: 0 0 10px white;
-            display: block;
-            margin: 30px auto;
-        }
+    .logo span {
+      color: #f97316;
+    }
 
-        .enter-button:hover {
-            background-color: rgba(0, 0, 0, 0.2);
-        }
+    /* Navigation */
+    nav {
+      background: #0f111a;
+      border-bottom: 1px solid #1a1f2d;
+    }
 
-        /* Media query untuk perangkat desktop */
-        @media (min-width: 768px) {
-            .column-item {
-                width: 45%;
-            }
-            .column-item.second {
-                height: 200px;
-            }
-        }
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      overflow-x: auto;
+    }
 
-        /* Media query untuk perangkat mobile (Android) */
-        @media (max-width: 767px) {
-            .column-item {
-                width: 80%;
-            }
-            .column-item.second {
-                height: 250px;
-            }
-        }
-    </style>
+    .nav-inner::-webkit-scrollbar {
+      display: none;
+    }
+
+    .nav-link {
+      padding: 0.75rem 1rem;
+      color: #c9c9cf;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      border-right: 1px solid #1a1f2d;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      background: #f97316;
+      color: #0f111a;
+    }
+
+    /* Layout */
+    main {
+      max-width: 1100px;
+      margin: 1.5rem auto;
+      padding: 0 1rem;
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 1.5rem;
+    }
+
+    /* Hero */
+    .hero {
+      background: #1b1f2d;
+      border-radius: 0.75rem;
+      overflow: hidden;
+    }
+
+    .hero-image {
+      height: 220px;
+      background: #050816;
+      overflow: hidden;
+    }
+
+    .hero-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .hero-content {
+      padding: 1.25rem 1.5rem;
+    }
+
+    .hero-tag {
+      color: #f97316;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+      letter-spacing: 0.08em;
+    }
+
+    .hero-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+      color: #ffffff;
+    }
+
+    .hero-meta {
+      font-size: 0.8rem;
+      color: #9ca3af;
+      margin-bottom: 0.75rem;
+    }
+
+    .hero-text {
+      font-size: 0.9rem;
+      color: #d1d5db;
+    }
+
+    /* Articles */
+    .articles {
+      margin-top: 1.5rem;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    .article-card {
+      background: #1a1d29;
+      border: 1px solid #272b3b;
+      border-radius: 0.75rem;
+      padding: 0.9rem;
+    }
+
+    .article-category {
+      font-size: 0.7rem;
+      color: #9ca3af;
+      text-transform: uppercase;
+    }
+
+    .article-title {
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin: 0.25rem 0;
+      color: #ffffff;
+    }
+
+    .article-title:hover {
+      color: #f97316;
+    }
+
+    .article-meta {
+      font-size: 0.75rem;
+      color: #9ca3af;
+    }
+
+    .article-summary {
+      font-size: 0.85rem;
+      color: #b5b8c6;
+      margin-top: 0.4rem;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: #181b27;
+      border: 1px solid #262a3a;
+      padding: 1rem;
+      border-radius: 0.75rem;
+    }
+
+    .card h3 {
+      font-size: 1rem;
+      margin-bottom: 0.75rem;
+      border-left: 4px solid #f97316;
+      padding-left: 0.5rem;
+      color: #ffffff;
+    }
+
+    .headline-item + .headline-item {
+      margin-top: 0.75rem;
+      border-top: 1px dashed #2b3042;
+      padding-top: 0.75rem;
+    }
+
+    .headline-link {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #ffffff;
+    }
+
+    .headline-link:hover {
+      color: #f97316;
+    }
+
+    .headline-meta {
+      font-size: 0.75rem;
+      color: #9ca3af;
+    }
+
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .tag {
+      font-size: 0.75rem;
+      padding: 0.25rem 0.5rem;
+      border: 1px solid #2a3042;
+      border-radius: 999px;
+      background: #151822;
+      cursor: pointer;
+      color: #d1d5db;
+    }
+
+    .tag:hover {
+      border-color: #f97316;
+      color: #f97316;
+    }
+
+    /* Footer */
+    footer {
+      background: #0e1018;
+      padding: 1rem;
+      text-align: center;
+      font-size: 0.8rem;
+      color: #6b7280;
+      margin-top: 2rem;
+      border-top: 1px solid #1a1d29;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      main {
+        grid-template-columns: 1fr;
+      }
+      .articles {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
-    <!-- Kolom Pojok Atas -->
-    <div class="column">
-        <button onclick="window.location.href='https://r4nxei.github.io/Page/'">𝙿𝙰𝙶𝙴</button>
-        <button>𝙼𝙴𝚂𝚂𝙰𝙶𝙴</button>
-        <button>𝚁𝙾𝙱𝙻𝙾𝚇</button>
-        <button>𝙰𝙱𝙾𝚄𝚃</button>
+
+  <!-- BAR ATAS -->
+  <div class="top-bar">
+    <span>Kamis, 27 November 2025</span>
+    <span>Breaking: Anomali dari SMAS Yuppentek 1 Tangerang resmi "lepas kandang"!</span>
+  </div>
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-inner">
+      <div class="logo">Indra<span>News</span></div>
     </div>
+  </header>
 
-    <!-- Kolom Input Teks Nama (Kolom Pertama) -->
-    <div class="column-item">
-        <textarea id="name" placeholder="Put Your Name Here..."></textarea>
+  <!-- NAV -->
+  <nav>
+    <div class="nav-inner">
+      <div class="nav-link active">Home</div>
+      <div class="nav-link">Tangerang</div>
+      <div class="nav-link">Pendidikan</div>
+      <div class="nav-link">Teknologi</div>
+      <div class="nav-link">Hiburan</div>
+      <div class="nav-link">Lifestyle</div>
+      <div class="nav-link">Opini</div>
     </div>
+  </nav>
 
-    <!-- Kolom Input Teks Tambahan (Kolom Kedua) -->
-    <div class="column-item second">
-        <textarea id="message" placeholder="Message..."></textarea>
-    </div>
+  <main>
+    <!-- KIRI: BERITA UTAMA + ARTIKEL -->
+    <section>
+      <!-- HERO: BERITA ANOMALI -->
+      <article class="hero">
+        <div class="hero-image">
+          <!-- GAMBAR ANOMALI -->
+          <img src="Img/mil.jpg" alt="Ilustrasi anomali dari SMAS Yuppentek 1 Tangerang" class="hero-photo" />
+        </div>
+        <div class="hero-content">
+          <div class="hero-tag">Berita Utama • Fiksi Komedi</div>
 
-    <!-- Tombol Enter -->
-    <button class="enter-button" onclick="sendMessage()">Enter</button>
+          <h1 class="hero-title">
+            Anomali Lepas dari SMAS Yuppentek 1 Tangerang, Warga Kaget tapi Malah Ketagihan Lihat
+          </h1>
 
-    <script>
-        async function sendMessage() {
-            // Ambil data nama dan pesan
-            var name = document.getElementById('name').value;
-            var message = document.getElementById('message').value;
+          <div class="hero-meta">
+            Oleh Redaksi IndraNews • 5 menit lalu • Tangerang
+          </div>
 
-            if (!name || !message) {
-                showNotification('Name and message cannot be empty!', 'error');
-                return;
-            }
+          <p class="hero-text">
+            Tangerang – Suasana tenang di sekitar SMAS Yuppentek 1 Tangerang mendadak berubah
+            ketika sebuah <strong>"anomali"</strong> dilaporkan lepas dari area sekolah. Bukan
+            anomali alam, bukan juga makhluk gaib, tapi sosok misterius yang konon muncul
+            setiap jam pelajaran dimulai dan menghilang pas jam istirahat.
+          </p>
+          <br />
+          <p class="hero-text">
+            Saksi mata mengatakan anomali itu memiliki ciri khas: jalannya pelan tapi tugasnya
+            selalu cepat terkumpul, matanya sayu tapi nilai ujiannya bikin guru senyum-senyum.
+            Warga sekitar sempat panik, tapi panik sambil ketawa, karena anomali tersebut
+            tertangkap kamera sedang beli cimol di depan sekolah sambil nego harga.
+          </p>
+          <br />
+          <p class="hero-text">
+            Pihak sekolah menegaskan bahwa semua ini hanyalah kejadian unik di kalangan siswa,
+            dan mengimbau masyarakat untuk tetap tenang. 
+            <em>"Kalau ketemu anomali itu, jangan ditakuti, cukup dikasih wifi dan charger,"</em>
+            ujar salah satu guru sambil tertawa.
+          </p>
+        </div>
+      </article>
 
-            // URL Webhook Discord
-            var webhookUrl = "https://discord.com/api/webhooks/1327200149134381096/pmlY151E4nuSjjOoL_foHu2XlWt7HQw3XxunzsNlfdJ1WSY_IHTjC4_AjXfuyFPYEfCv";
+      <!-- ARTIKEL LAIN -->
+      <section class="articles">
+        <article class="article-card">
+          <div class="article-category">Pendidikan</div>
+          <a href="#" class="article-title">
+            Guru Klaim Anomali Ini Selalu Hadir Kalau Ada Ulangan Mendadak
+          </a>
+          <div class="article-meta">30 menit lalu • 3 menit baca</div>
+          <p class="article-summary">
+            Menurut beberapa guru, anomali misterius tersebut hanya muncul di kelas ketika
+            ada ulangan dadakan. Siswa lain menduga anomali itu sebenarnya punya kamus jawaban
+            yang tertanam di otak, tapi kalau disuruh maju ke depan langsung mode “loading”.
+          </p>
+        </article>
 
-            // Payload yang akan dikirim ke webhook
-            var payload = {
-                content: `Name: \`${name}\`\nMessage: \`${message}\``
-            };
+        <article class="article-card">
+          <div class="article-category">Tangerang</div>
+          <a href="#" class="article-title">
+            Pedagang di Depan Sekolah: “Anomali, Anomali, tapi Tetap Bayar Kontan”
+          </a>
+          <div class="article-meta">1 jam lalu • 2 menit baca</div>
+          <p class="article-summary">
+            Seorang pedagang cimol mengaku sering melihat sosok yang diduga anomali itu.
+            <em>“Anak itu aneh, datangnya kaya ninja, hilangnya kaya angin. Tapi kalau soal bayar,
+            tetap tunai. Saya sih dukung anomali begini,”</em> ujarnya sambil tertawa.
+          </p>
+        </article>
 
-            // Kirim data ke webhook
-            fetch(webhookUrl, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(payload)
-            })
-            .then(response => {
-                if (response.ok) {
-                    showNotification("Message sent successfully!", "success");
-                } else {
-                    showNotification("Failed to send message!", "error");
-                }
-            })
-            .catch(error => {
-                showNotification("Error sending message: " + error.message, "error");
-            });
-        }
+        <article class="article-card">
+          <div class="article-category">Hiburan</div>
+          <a href="#" class="article-title">
+            Netizen: “Film Horor Kalah, Mending Bikin Seri ‘Anomali Yuppentek’”
+          </a>
+          <div class="article-meta">2 jam lalu • 4 menit baca</div>
+          <p class="article-summary">
+            Cerita tentang anomali ini viral di media sosial. Banyak netizen yang mengusulkan
+            agar kisah ini diangkat jadi film atau web series. 
+            Komennya beragam, mulai dari yang serius sampai yang cuma nanya:
+            <em>“Anomali ini bisa bantu ngerjain PR nggak?”</em>
+          </p>
+        </article>
 
-        // Fungsi untuk menampilkan notifikasi
-        function showNotification(message, type) {
-            const notification = document.createElement('div');
-            notification.textContent = message;
-            notification.style.position = 'fixed';
-            notification.style.bottom = '20px';
-            notification.style.right = '20px';
-            notification.style.backgroundColor = type === 'success' ? 'green' : 'red';
-            notification.style.color = 'white';
-            notification.style.padding = '10px 20px';
-            notification.style.borderRadius = '5px';
-            notification.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.5)';
-            document.body.appendChild(notification);
+        <article class="article-card">
+          <div class="article-category">Opini</div>
+          <a href="#" class="article-title">
+            Ketika “Anomali” Sebenarnya Hanya Siswa Rajin yang Jarang Kelihatan
+          </a>
+          <div class="article-meta">Kemarin • 5 menit baca</div>
+          <p class="article-summary">
+            Beberapa pengamat pendidikan santai berpendapat bahwa anomali ini sebenarnya
+            hanyalah simbol dari siswa-siswa yang rajin tapi low profile. Muncul tiba-tiba,
+            tugas beres, nilai tinggi, lalu menghilang lagi ke balik layar, seperti ninja
+            pendidikan.
+          </p>
+        </article>
+      </section>
+    </section>
 
-            setTimeout(() => {
-                notification.remove();
-            }, 3000);
-        }
-    </script>
+    <!-- KANAN: SIDEBAR -->
+    <aside class="sidebar">
+      <div class="card">
+        <h3>Headline Lain</h3>
+        <div class="headline-item">
+          <a href="#" class="headline-link">
+            Kantin Sekolah Rilis Menu “Paket Anomali”: Kenyang Tapi Masih Laper
+          </a>
+          <div class="headline-meta">15 menit lalu</div>
+        </div>
+        <div class="headline-item">
+          <a href="#" class="headline-link">
+            Satpam: “Yang Masuk Gerbang Cepat Kilat Itu Manusia atau Bug Server?”
+          </a>
+          <div class="headline-meta">45 menit lalu</div>
+        </div>
+        <div class="headline-item">
+          <a href="#" class="headline-link">
+            Siswa Lain Ikut-ikutan Jadi Anomali: Tiba-tiba Rajin, Guru Auto Curiga
+          </a>
+          <div class="headline-meta">1 jam lalu</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Topik Populer</h3>
+        <div class="tag-list">
+          <div class="tag">Yuppentek 1</div>
+          <div class="tag">Anomali</div>
+          <div class="tag">Cimol</div>
+          <div class="tag">Anak Sekolah</div>
+          <div class="tag">Cerita Lucu</div>
+          <div class="tag">Viral</div>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <footer>
+    © <span id="year"></span> IndraNews. Semua cerita di halaman ini bersifat fiksi dan untuk hiburan.
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+
 </body>
 </html>
